@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use App\Models\User;
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
@@ -11,8 +14,9 @@ class UserController extends Controller
     *
     * @return Response
     */
-    public function index() {
-        //
+    public function index(UserRepository $repository) {
+        $users = $repository->getAll();
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -20,8 +24,8 @@ class UserController extends Controller
         *
         * @return Response
         */
-    public function create() {
-        //
+    public function create(): View {
+        return view('user.create');
     }
 
     /**
@@ -29,8 +33,8 @@ class UserController extends Controller
         *
         * @return Response
         */
-    public function store() {
-        //
+    public function store(Request $request, UserRepository $repository) {
+        return $repository->register($request);
     }
 
     /**
@@ -39,8 +43,8 @@ class UserController extends Controller
         * @param  int  $id
         * @return Response
         */
-    public function show($id) {
-        //
+    public function show($id, UserRepository $repository) {
+        return $repository->get($id);
     }
 
     /**
@@ -49,8 +53,9 @@ class UserController extends Controller
         * @param  int  $id
         * @return Response
         */
-    public function edit($id) {
-        //
+    public function edit($id, UserRepository $repository) {
+        $user = $repository->get($id);
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -59,8 +64,8 @@ class UserController extends Controller
         * @param  int  $id
         * @return Response
         */
-    public function update($id) {
-        //
+    public function update(Request $request, UserRepository $repository) {
+        return $repository->update($request->id);
     }
 
     /**
@@ -69,7 +74,7 @@ class UserController extends Controller
         * @param  int  $id
         * @return Response
         */
-    public function destroy($id) {
-        //
+    public function destroy($id, UserRepository $repository) {
+        return $repository->delete($id);
     }
 }

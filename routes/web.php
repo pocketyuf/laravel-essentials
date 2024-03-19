@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController; //as of Laravel 10
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +19,12 @@ Route::get('/', function () {
 });
 
 //generic all-in route
-Route::resource('user', 'UserController');
+// Route::resource('user', UserController::class);
 //specific custom routes
-Route::get('user', 'UserController@index');
-Route::get('user/create', 'UserController@create'); //view
-Route::get('user/{id}', 'UserController@store');
-Route::get('user/{id}/edit', 'UserController@edit'); //view
-Route::post('user', 'UserController@create');
-Route::patch('user/{id}', 'UserController@update'); //or put
-Route::delete('user/{id}', 'UserController@destroy');
+Route::get('user', [UserController::class, 'index'])->name('users.index');
+Route::get('user/create', [UserController::class, 'create'])->name('users.create'); //view
+Route::get('user/{id}', [UserController::class, 'show']);
+Route::get('user/{id}/edit', [UserController::class, 'edit'])->name('users.edit'); //view
+Route::post('user', [UserController::class, 'store']);
+Route::put('user/{id}', [UserController::class, 'update'])->name('users.update');
+Route::delete('user/{id}', [UserController::class, 'destroy'])->name('users.destroy');
