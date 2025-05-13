@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController; //as of Laravel 10
+use App\Http\Controllers\Auth\LoginController; //as of Laravel 10
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,14 @@ Route::get('/', function () {
 //generic all-in route
 // Route::resource('user', UserController::class);
 //specific custom routes
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::get('user', [UserController::class, 'index'])->name('users.index');
 Route::get('user/create', [UserController::class, 'create'])->name('users.create'); //view
 Route::get('user/{id}', [UserController::class, 'show']);

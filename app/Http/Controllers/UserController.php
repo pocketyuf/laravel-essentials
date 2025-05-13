@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\User;
 use App\Repositories\UserRepository;
 
 class UserController extends Controller
@@ -64,8 +63,8 @@ class UserController extends Controller
         * @param  int  $id
         * @return Response
         */
-    public function update(Request $request, UserRepository $repository) {
-        return $repository->update($request->id);
+    public function update(Request $request, $id, UserRepository $repository) {
+        return $repository->update($request, $id);
     }
 
     /**

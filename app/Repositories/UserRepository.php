@@ -30,31 +30,30 @@ class UserRepository
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        return redirect()->back()->withSuccess('User successfully created!');
+        return redirect()->route('users.index')->withSuccess('User successfully created!');
     }
 
-    public function update($request) {
+    public function update($request, $id) {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users|max:255',
-            'password' => ['required', Password::defaults()]
+            'email' => 'required|unique:users,email,' . $id . '|max:255',
+            'password' => ['nullable', Password::defaults()]
         ]);
-        $user = User::find($request->id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        return redirect()->back()->withSuccess('User successfully created!');
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if($request->filled('password'))
+            $user->password = bcrypt($request->password);
+        $user->save();
+        return redirect()->route('users.index')->withSuccess('User successfully updated!');
     }
 
     public function delete($id) {
-        return User::destroy($id);
+        User::destroy($id);
+        return redirect()->route('users.index')->withSuccess('User successfully deleted!');
     }
 }
