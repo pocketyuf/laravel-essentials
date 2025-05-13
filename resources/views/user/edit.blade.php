@@ -37,7 +37,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" value="{{ $user->password }}" required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="*****">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button type="submit" class="btn btn-primary">Update User</button>
